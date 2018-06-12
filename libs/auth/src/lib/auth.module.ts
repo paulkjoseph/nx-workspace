@@ -8,6 +8,13 @@ import { LoginComponent } from './containers/login/login.component';
 import { LoginFormComponent } from './components/login-form/login-form.component';
 import { MaterialModule } from '@nx-workspace/material/src';
 import { AuthInterceptor } from './interceptors/auth/auth.interceptor.service';
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
+import {
+  authReducer,
+  initialState as authInitialState
+} from './+state/auth.reducer';
+import { AuthEffects } from './+state/auth.effects';
 
 export const authRoutes: Route[] = [
   { path: 'login', component: LoginComponent }
@@ -20,7 +27,11 @@ const COMPONENTS = [LoginComponent, LoginFormComponent];
     RouterModule,
     HttpClientModule,
     MaterialModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    StoreModule.forFeature('auth', authReducer, {
+      initialState: authInitialState
+    }),
+    EffectsModule.forFeature([AuthEffects])
   ],
   declarations: [COMPONENTS],
   exports: [COMPONENTS],
@@ -29,7 +40,8 @@ const COMPONENTS = [LoginComponent, LoginFormComponent];
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
       multi: true
-    }
+    },
+    AuthEffects
   ]
 })
 export class AuthModule {}
