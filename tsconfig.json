@@ -18,6 +18,9 @@
     "paths": {
       "@nx-workspace/*": [
         "libs/*"
+      ],
+      "@nx-workspace/auth": [
+        "libs/auth/src/index.ts"
       ]
     }
   },
