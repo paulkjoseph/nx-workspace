@@ -8,8 +8,6 @@ import { LoginSuccess } from '@nx-workspace/auth/src/lib/+state/auth.actions';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'app';
-
   constructor(private store: Store<AuthState>) {
     const user = JSON.parse(localStorage.getItem('user'));
     if (user) {
