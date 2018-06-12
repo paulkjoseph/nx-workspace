@@ -24,6 +24,9 @@
       ],
       "@nx-workspace/material": [
         "libs/material/src/index.ts"
+      ],
+      "@nx-workspace/layout": [
+        "libs/layout/src/index.ts"
       ]
     }
   },

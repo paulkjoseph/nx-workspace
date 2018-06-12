@@ -6,6 +6,7 @@ import { AppComponent } from './app.component';
 import { NxModule } from '@nrwl/nx';
 import { RouterModule } from '@angular/router';
 import { authRoutes, AuthModule } from '@nx-workspace/auth/src';
+import { LayoutModule } from '@nx-workspace/layout/src';
 
 @NgModule({
   declarations: [AppComponent],
@@ -16,7 +17,8 @@ import { authRoutes, AuthModule } from '@nx-workspace/auth/src';
     RouterModule.forRoot([{ path: 'auth', children: authRoutes }], {
       initialNavigation: 'enabled'
     }),
-    AuthModule
+    AuthModule,
+    LayoutModule
   ],
   providers: [],
   bootstrap: [AppComponent]
