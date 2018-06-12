@@ -6,18 +6,24 @@ import { ProductsComponent } from './containers/products/products.component';
 import { MaterialModule } from '@nx-workspace/material/src';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
-import { productsReducer, initialState as productsInitialState } from './+state/products.reducer';
+import {
+  productsReducer,
+  initialState as productsInitialState
+} from './+state/products.reducer';
 import { ProductsEffects } from './+state/products.effects';
+import { ProductListComponent } from './components/product-list/product-list.component';
 
 @NgModule({
   imports: [
     CommonModule,
     MaterialModule,
     RouterModule.forChild([{ path: '', component: ProductsComponent }]),
-    StoreModule.forFeature('products', productsReducer, { initialState: productsInitialState }),
+    StoreModule.forFeature('products', productsReducer, {
+      initialState: productsInitialState
+    }),
     EffectsModule.forFeature([ProductsEffects])
   ],
-  declarations: [ProductsComponent],
+  declarations: [ProductsComponent, ProductListComponent],
   providers: [ProductsEffects]
 })
 export class ProductsModule {}
