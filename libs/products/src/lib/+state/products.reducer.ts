@@ -1,30 +1,21 @@
 import { ProductsActions, ProductsActionTypes } from './products.actions';
+import { EntityState, EntityAdapter, createEntityAdapter } from '@ngrx/entity';
+
 import { Product } from '@nx-workspace/data-models';
-
-/**
- * Interface for the 'Products' data used in
- *  - ProductsState, and
- *  - productsReducer
- */
-export interface ProductsData {
+export interface ProductsData extends EntityState<Product> {
+  error: string;
+  selectedProductId: number;
   loading: boolean;
-  products: Product[];
-  error: '';
 }
-
-/**
- * Interface to the part of the Store containing ProductsState
- * and other information related to ProductsData.
- */
 export interface ProductsState {
   readonly products: ProductsData;
 }
-
-export const initialState: ProductsData = {
-  loading: false,
-  products: [],
-  error: null
-};
+export const adapter: EntityAdapter<Product> = createEntityAdapter<Product>({});
+export const initialState: ProductsData = adapter.getInitialState({
+  error: '',
+  selectedProductId: null,
+  loading: false
+});
 
 export function productsReducer(
   state = initialState,
@@ -32,24 +23,31 @@ export function productsReducer(
 ): ProductsData {
   switch (action.type) {
     case ProductsActionTypes.LoadProducts: {
-      const loading = true;
-      return { ...state, loading };
+      return { ...state, loading: true };
     }
 
     case ProductsActionTypes.LoadProductsSuccess: {
-      const loading = false;
-      const products = action.payload;
-      return { ...state, loading, products };
+      return adapter.addAll(action.payload, { ...state, error: '' });
     }
 
     case ProductsActionTypes.LoadProductsFail: {
-      const loading = false;
-      const products = [];
-      const error = action.payload;
-      return { ...state, loading, products, error };
+      return adapter.removeAll({ ...state, error: action.payload });
     }
 
     default:
       return state;
   }
 }
+
+export const getSelectedProductId = (state: ProductsData) =>
+  state.selectedProductId;
+export const {
+  // select the array of user ids
+  selectIds: selectProductIds,
+  // select the dictionary of Products entities
+  selectEntities: selectProductEntities,
+  // select the array of Productss
+  selectAll: selectAllProducts,
+  // select the total Products count
+  selectTotal: selectProductsTotal
+} = adapter.getSelectors();
