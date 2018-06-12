@@ -44,8 +44,9 @@ export function authReducer(
 
     case AuthActionTypes.LoginFail: {
       const loading = false;
+      const user = null;
       const error = action.payload;
-      return { ...state, loading, error };
+      return { ...state, loading, user, error };
     }
 
     default:

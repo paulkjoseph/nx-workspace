@@ -1,6 +1,8 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 
-import { AuthService } from '@nx-workspace/auth/src/lib/services/auth/auth.service';
+import { AuthState } from './../../+state/auth.reducer';
+import { Store } from '@ngrx/store';
+import * as authActions from './../../+state/auth.actions';
 
 @Component({
   selector: 'app-login',
@@ -9,11 +11,11 @@ import { AuthService } from '@nx-workspace/auth/src/lib/services/auth/auth.servi
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class LoginComponent implements OnInit {
-  constructor(private authService: AuthService) {}
+  constructor(private store: Store<AuthState>) {}
 
   ngOnInit() {}
 
   login(authenticate: any) {
-    this.authService.login(authenticate).subscribe();
+    this.store.dispatch(new authActions.Login(authenticate));
   }
 }
